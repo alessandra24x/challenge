@@ -1,0 +1,25 @@
+<div class="form-container">
+  <label for="name">Search</label>
+  <input type="text" id="search" aria-describedby="name" placeholder="Busqueda">
+</div>
+<table>
+  <thead>
+    <th>ID</th>
+    <th>Name</th>
+    <th>LastName</th>
+    <th>Phone</th>
+    <th>Email</th>
+  </thead>
+  <tbody>
+    {{#each userList}}
+    <tr>
+      <td>{{this.id}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.lastName}}</td>
+      <td>{{this.phone}}</td>
+      <td>{{this.email}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<a href="/user/form">Crear Nuevo Usuario</a>
