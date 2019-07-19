@@ -9,31 +9,28 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-form, table {
+form {
   max-width: 1200px;
   width: 800px;
   margin: 20px auto;
+  .form-container {
+    margin-bottom: 15px;
+    display: block;
+    label {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
 
-}
-
-.form-container {
-  margin-bottom: 15px;
-  display: block;
-}
-
-label {
-  display: inline-block;
-  margin-bottom: 10px;
-  font-size: 20px;
-}
-
-input {
-  display: block;
-  width: 100%;
-  height: 40px;
-  color: #495057;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
+    input {
+      display: block;
+      width: 100%;
+      height: 40px;
+      color: #495057;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+    }
+  }
 }
 
 input::placeholder {
@@ -41,20 +38,21 @@ input::placeholder {
   padding-left: 10px;
 }
 
-button {
-  width: 80px;
-  height: 40px;
-  border-radius: 5px;
-  color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
-  cursor: pointer;
-  font-size: 14px;
-}
+  button {
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    cursor: pointer;
+    font-size: 14px;
 
-button:disabled {
-  background-color: #495057;
-  border-color: #ced4da;
+  .newUserButton {
+    width: 10em;
+    font-size: 11px;
+    margin-top: 1em;
+  }
 }
 
 a {
@@ -62,4 +60,34 @@ a {
   font-size: smaller;
   font-weight: bold;
   text-decoration: none;
+}
+
+.userListContainer {
+  margin: 30px 40px 0;
+}
+
+.searchInput {
+  width: initial;
+  height: 40px;
+}
+
+.newUserButton {
+  height: 55px;
+  width: 120px;
+}
+
+table {
+  width: 800px;
+  max-width: 1200px;
+  border: 1px solid #ddd;
+  margin: 20px 0;
+  border-collapse: collapse;
+  th, td {
+    padding: 8px;
+    line-height: 1.5px;
+    border: 1px solid black;
+    text-align: left;
+    height: 30px;
+  }
+  tr:nth-child(even){background-color: #f2f2f2}
 }

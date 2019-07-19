@@ -21,6 +21,7 @@ const isEmailValid = email =>
     email
   );
 
+
 function validateUser({ name, lastName, phone, email }) {
   if (
     isNameValid(name) &&
@@ -47,8 +48,8 @@ async function saveUser(user) {
       throw new Error("Invalid user Object");
     }
 
-    const fileData = await readFileAsync(DATABASE_PATH);
-    const userData = userData.sort((a, b) => a.id > b.id);
+    const fileData = JSON.parse(await readFileAsync(DATABASE_PATH));
+    const userData = fileData.sort((a, b) => a.id > b.id);
     const newUser = {
       id: userData.slice(-1)[0].id + 1,
       ...user
@@ -64,7 +65,7 @@ async function saveUser(user) {
 }
 
 /* GET users listing. */
-router.get("/", function(req, res, next) {
+router.get("/list", function(req, res, next) {
   readFileAsync(DATABASE_PATH)
     .then(data => {
       res.render("userTable", {
@@ -74,21 +75,45 @@ router.get("/", function(req, res, next) {
       });
     })
     .catch(err => {
-      res.status(500);
-      res.json(err);
+      res.send(500, { message: 'error' });
     });
 });
 
 router.post("/", (req, res) => {
   saveUser(req.body)
     .then(user => {
-      res.status(200);
-      res.json(user);
+      // res.status(200);
+      // res.json(user);
+      res.send(200, { user: user });
     })
     .catch(err => {
-      res.status(500);
-      res.json(err);
+      res.send(500, { message: 'error' });
     });
+});
+
+router.delete("/:id", (req, res) => {
+  const userId = parseInt(req.params.id);
+  readFileAsync(DATABASE_PATH)
+  .then(data => {
+    return JSON.parse(data);
+  })
+  .then( json => {
+    json.splice(json.findIndex(u => u.id === userId), 1);
+    return json;
+  })
+  .then ( file => {
+    writeFileAsync(DATABASE_PATH, JSON.stringify(file))
+    .then(() => {
+      res.send(200, { message: 'ok' });
+    })
+    .catch(err => {
+      res.send(500, { message: 'error' });
+    });
+  })
+  .catch(err => {
+    res.status(500);
+    res.json(err);
+  });
 });
 
 router.get("/form", (req, res) => {
