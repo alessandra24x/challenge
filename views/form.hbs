@@ -1,31 +1,49 @@
 <form id="form" action="" method="POST">
-
+  <h2>{{header}}</h2>
   <div class="form-container">
     <label for="name">Nombre</label>
-    <input type="text" id="name" aria-describedby="name" placeholder="Ingrese su nombre">
+    <input type="text" id="name" aria-describedby="name" placeholder="Ingrese su nombre"
+    {{#if name}}
+      value={{name}}
+    {{/if}}
+    >
     <small id="elementName"></small>
   </div>
 
   <div class="form-container">
     <label for="last-name">Apellido</label>
-    <input type="text" id="last-name" aria-describedby="last-name" placeholder="Ingrese su apellido">
+    <input type="text" id="last-name" aria-describedby="last-name" placeholder="Ingrese su apellido"
+    {{#if lastName}}
+      value={{lastName}}
+    {{/if}}
+    >
     <small id="elementLastName"></small>
   </div>
 
   <div class="form-container">
     <label for="phone">Telefono</label>
-    <input type="number" id="phone" aria-describedby="phone" placeholder="Ingrese su número de telefono">
+    <input type="number" id="phone" aria-describedby="phone" placeholder="Ingrese su número de telefono"
+    {{#if phone}}
+      value={{phone}}
+    {{/if}}
+    >
     <small id="elementPhone"></small>
   </div>
 
   <div class="form-container">
     <label for="email">Email</label>
     <input type="email" id="email" aria-describedby="email"
-      placeholder="Ingrese su correo electrónico">
+      placeholder="Ingrese su correo electrónico"
+      {{#if email}}
+      value={{email}}
+      {{/if}}
+      >
     <small id="elementEmail"></small>
   </div>
-
+  {{#if userId}}
+    <input type="hidden" id="userId" value={{userId}}>
+  {{/if}}
   <button class="submit" type="submit" id="submit">Enviar</button>
   <small id="elementForm"></small>
-  <a href="/user/list" id="redirection"></a>
+  <a href="http://localhost:3000/user/list" id="redirection"></a>
 </form>

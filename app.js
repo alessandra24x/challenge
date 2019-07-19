@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const sassMiddleware = require("node-sass-middleware");
 
-const indexRouter = require("./routes/form");
+const indexRouter = require("./routes/misc");
 const usersRouter = require("./routes/user");
 
 const app = express();

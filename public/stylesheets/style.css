@@ -11,6 +11,8 @@ form {
   max-width: 1200px;
   width: 800px;
   margin: 20px auto; }
+  form h2 {
+    text-align: center; }
   form .form-container {
     margin-bottom: 15px;
     display: block; }

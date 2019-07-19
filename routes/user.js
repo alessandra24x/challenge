@@ -21,7 +21,6 @@ const isEmailValid = email =>
     email
   );
 
-
 function validateUser({ name, lastName, phone, email }) {
   if (
     isNameValid(name) &&
@@ -50,10 +49,18 @@ async function saveUser(user) {
 
     const fileData = JSON.parse(await readFileAsync(DATABASE_PATH));
     const userData = fileData.sort((a, b) => a.id > b.id);
-    const newUser = {
-      id: userData.slice(-1)[0].id + 1,
-      ...user
-    };
+
+    const newUser = user.hasOwnProperty("id")
+      ? {
+          ...userData
+            .splice(userData.findIndex(u => u.id === user.id), 1)
+            .pop(),
+          ...newUserData
+        }
+      : {
+          id: userData.slice(-1)[0].id + 1,
+          ...user
+        };
     userData.push(newUser);
 
     await writeFileAsync(DATABASE_PATH, JSON.stringify(userData));
@@ -64,7 +71,6 @@ async function saveUser(user) {
   }
 }
 
-/* GET users listing. */
 router.get("/list", function(req, res, next) {
   readFileAsync(DATABASE_PATH)
     .then(data => {
@@ -75,52 +81,78 @@ router.get("/list", function(req, res, next) {
       });
     })
     .catch(err => {
-      res.send(500, { message: 'error' });
+      res.status(500).send(err.message);
     });
 });
 
 router.post("/", (req, res) => {
   saveUser(req.body)
     .then(user => {
-      // res.status(200);
-      // res.json(user);
-      res.send(200, { user: user });
+      res.status(200).send({ user });
     })
     .catch(err => {
-      res.send(500, { message: 'error' });
+      res.status(500).send(err.message);
+    });
+});
+
+router.put("/:id", (req, res) => {
+  saveUser({ id: parseInt(req.params.id), ...req.body })
+    .then(user => {
+      res.status(200).send({ user });
+    })
+    .catch(err => {
+      res.status(500).send(err.message);
     });
 });
 
 router.delete("/:id", (req, res) => {
   const userId = parseInt(req.params.id);
   readFileAsync(DATABASE_PATH)
-  .then(data => {
-    return JSON.parse(data);
-  })
-  .then( json => {
-    json.splice(json.findIndex(u => u.id === userId), 1);
-    return json;
-  })
-  .then ( file => {
-    writeFileAsync(DATABASE_PATH, JSON.stringify(file))
-    .then(() => {
-      res.send(200, { message: 'ok' });
+    .then(data => {
+      return JSON.parse(data);
+    })
+    .then(json => {
+      json.splice(json.findIndex(u => u.id === userId), 1);
+      return json;
+    })
+    .then(file => {
+      writeFileAsync(DATABASE_PATH, JSON.stringify(file))
+        .then(() => {
+          res.status(200).send({ message: "ok" });
+        })
+        .catch(err => {
+          res.status(500).send(err.message);
+        });
     })
     .catch(err => {
-      res.send(500, { message: 'error' });
+      res.status(500).send(err.message);
     });
-  })
-  .catch(err => {
-    res.status(500);
-    res.json(err);
-  });
 });
 
 router.get("/form", (req, res) => {
   res.render("form", {
     title: "User Form",
+    header: "Nuevo Usuario",
     jsSource: "form"
   });
+});
+
+router.get("/form/:id", (req, res) => {
+  readFileAsync(DATABASE_PATH)
+    .then(data => {
+      const userId = parseInt(req.params.id);
+      const user = JSON.parse(data).find(u => u.id === parseInt(userId));
+      res.render("form", {
+        title: "User Form",
+        header: `Editar Usuario #${userId}`,
+        jsSource: "form",
+        userId,
+        ...user
+      });
+    })
+    .catch(err => {
+      res.status(500).send(err.message);
+    });
 });
 
 module.exports = router;

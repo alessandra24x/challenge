@@ -21,7 +21,7 @@
         <td>{{this.lastName}}</td>
         <td>{{this.phone}}</td>
         <td>{{this.email}}</td>
-        <td><button class="edit" data-id="{{this.id}}" id="put">Editar</button></td>
+        <td><a href="/user/form/{{this.id}}"><button class="edit" id="put">Editar</button></a></td>
         <td><button class="delete" data-id="{{this.id}}" id="borrar">Borrar</button></td>
       </tr>
       {{/each}}
