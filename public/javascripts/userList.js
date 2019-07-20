@@ -1,47 +1,91 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", () => {
+  /**
+   *
+   * @type {HTMLInputElement}
+   */
   const search = document.getElementById("search");
+  /**
+   *
+   * @type {NodeListOf<Element>}
+   */
   const del = document.querySelectorAll(".delete");
 
-  del.forEach(el => {
-    el.addEventListener("click", event => {
-      const tg = event.target;
-      tg.parentNode.parentNode.remove();
-      fetch(`/user/${event.target.getAttribute("data-id")}`, {
-        method: "DELETE"
-      })
-        .then(response => response.json())
-        .catch(err => alert(err.message));
-    });
-  });
+  /**
+   *
+   * @param {Event} event
+   */
+  const clickDeleteEvent = ({ target }) => {
+    /**
+     * @type {HTMLButtonElement}
+     */
+    const buttonElement = target;
+    /**
+     *
+     * @type {HTMLTableCellElement}
+     */
+    const tableCell = buttonElement.parentNode;
+    /**
+     *
+     * @type {HTMLTableRowElement}
+     */
+    const row = tableCell.parentNode;
 
-  search.addEventListener("keyup", event => {
+    row.remove();
+    fetch(`/user/${target.getAttribute("data-id")}`, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
+      .catch(err => alert(err.message));
+  };
+
+  /**
+   *
+   * @param {HTMLTableRowElement} row
+   * @param {string} searchTerm
+   */
+  const updateRow = (row, searchTerm) => {
+    let show = false;
+    const rowLength = row.cells.length;
+    const rowSelectorString = `table > tbody > tr:nth-child(${row.rowIndex})`;
+
+    for (let i = 0; i < rowLength; i++) {
+      const cellText = row.cells.item(i).innerText.toLowerCase();
+
+      if (cellText.indexOf(searchTerm.toLowerCase()) > -1) {
+        show = true;
+        break;
+      }
+    }
+
+    show
+      ? (document.querySelector(rowSelectorString).style.display = "")
+      : (document.querySelector(rowSelectorString).style.display = "none");
+  };
+
+  /**
+   *
+   * @param {NodeListOf<HTMLTableRowElement>} tableRows
+   * @param {string} searchTerm
+   */
+  const updateTable = (tableRows, searchTerm) => {
+    tableRows.forEach(row => updateRow(row, searchTerm));
+  };
+
+  const typeInSearch = () => {
+    /**
+     * @type {NodeListOf<HTMLTableRowElement>}
+     */
     const tableRows = document.querySelectorAll("tbody > tr");
+    /**
+     * @type {string}
+     */
     const searchTerm = search.value;
 
-    tableRows.forEach(row => {
-      let show = false;
+    updateTable(tableRows, searchTerm);
+  };
 
-      // cells = td, cuantas celdas tiene la fila ?
-      const rowLength = row.cells.length;
-
-      for (let i = 0; i < rowLength; i++) {
-        // Iteramos por cada celda, accediendo al contenido con item(indice)
-        // Check if property value contains search
-        const cellText = row.cells.item(i).innerText.toLowerCase();
-
-        if (cellText.indexOf(searchTerm.toLowerCase()) > -1) {
-          show = true;
-          break;
-        }
-      }
-
-      show
-        ? (document.querySelector(
-            `table > tbody > tr:nth-child(${row.rowIndex})`
-          ).style.display = "")
-        : (document.querySelector(
-            `table > tbody > tr:nth-child(${row.rowIndex})`
-          ).style.display = "none");
-    });
+  del.forEach(el => {
+    el.addEventListener("click", clickDeleteEvent);
   });
+  search.addEventListener("keyup", typeInSearch);
 });

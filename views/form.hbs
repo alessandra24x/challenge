@@ -3,41 +3,38 @@
   <div class="form-container">
     <label for="name">Nombre</label>
     <input type="text" id="name" aria-describedby="name" placeholder="Ingrese su nombre"
-    {{#if name}}
-      value={{name}}
-    {{/if}}
+      {{#if name}}
+        value={{name}}
+      {{/if}}
     >
     <small id="elementName"></small>
   </div>
-
   <div class="form-container">
     <label for="last-name">Apellido</label>
     <input type="text" id="last-name" aria-describedby="last-name" placeholder="Ingrese su apellido"
-    {{#if lastName}}
-      value={{lastName}}
-    {{/if}}
+      {{#if lastName}}
+        value={{lastName}}
+      {{/if}}
     >
     <small id="elementLastName"></small>
   </div>
-
   <div class="form-container">
     <label for="phone">Telefono</label>
     <input type="number" id="phone" aria-describedby="phone" placeholder="Ingrese su número de telefono"
-    {{#if phone}}
-      value={{phone}}
-    {{/if}}
+      {{#if phone}}
+        value={{phone}}
+      {{/if}}
     >
     <small id="elementPhone"></small>
   </div>
-
   <div class="form-container">
     <label for="email">Email</label>
     <input type="email" id="email" aria-describedby="email"
       placeholder="Ingrese su correo electrónico"
       {{#if email}}
-      value={{email}}
+        value={{email}}
       {{/if}}
-      >
+    >
     <small id="elementEmail"></small>
   </div>
   {{#if userId}}

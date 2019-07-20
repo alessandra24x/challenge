@@ -1,31 +1,37 @@
 <div class="userListContainer">
   <div class="form-container">
     <label for="name">Search</label>
-    <input class="searchInput" type="text" id="search" aria-describedby="name" placeholder="Busqueda">
+    <input class="searchInput" type="text" id="search" aria-describedby="name" placeholder="Búsqueda">
   </div>
   <table>
     <thead>
-      <th>ID</th>
-      <th>Name</th>
-      <th>LastName</th>
-      <th>Phone</th>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Teléfono</th>
       <th>Email</th>
-      <th>Edit</th>
-      <th>Delete</th>
+      <th>Editar</th>
+      <th>Borrar</th>
+    </tr>
     </thead>
     <tbody>
-      {{#each userList}}
-      <tr>
-        <td>{{this.id}}</td>
+    {{#each userList}}
+      <tr>  
         <td>{{this.name}}</td>
         <td>{{this.lastName}}</td>
         <td>{{this.phone}}</td>
         <td>{{this.email}}</td>
-        <td><a href="/user/form/{{this.id}}"><button class="edit" id="put">Editar</button></a></td>
-        <td><button class="delete" data-id="{{this.id}}" id="borrar">Borrar</button></td>
+        <td><a href="/user/form/{{this.id}}">
+          <button class="edit" id="put">Editar</button>
+        </a></td>
+        <td>
+          <button class="delete" data-id="{{this.id}}" id="borrar">Borrar</button>
+        </td>
       </tr>
-      {{/each}}
+    {{/each}}
     </tbody>
   </table>
-  <a class="newUserLink" href="/user/form"><button class="newUserButton">Crear Nuevo Usuario</button></a>
+  <a class="newUserLink" href="/user/form">
+    <button class="newUserButton">Crear Nuevo Usuario</button>
+  </a>
 </div>

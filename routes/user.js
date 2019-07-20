@@ -5,17 +5,52 @@ const path = require("path");
 const { promisify } = require("util");
 const { readFile, writeFile } = require("fs");
 
-const readFileAsync = promisify(readFile);
-const writeFileAsync = promisify(writeFile);
+const readFilePromisified = promisify(readFile);
+const writeFilePromisified = promisify(writeFile);
 
+/**
+ * This is the path to the file-database (customer.json).
+ * @type {string}
+ */
 const DATABASE_PATH = path.join(__dirname, "../database/customer.json");
 
+/**
+ *
+ * @param {string} string
+ * @param {number} min
+ * @param {number} max
+ * @returns {boolean}
+ */
 const isStringWithinLenght = (string, min, max) =>
   string.length >= min && string.length <= max;
+
+/**
+ *
+ * @param {string} name
+ * @returns {boolean}
+ */
 const isNameValid = name => isStringWithinLenght(name.trim(), 1, 30);
+
+/**
+ *
+ * @param {string} lastName
+ * @returns {boolean}
+ */
 const isLastNameValid = lastName =>
   isStringWithinLenght(lastName.trim(), 1, 30);
+
+/**
+ *
+ * @param {string} phone
+ * @returns {boolean}
+ */
 const isPhoneValid = phone => /^\d+$/.test(phone);
+
+/**
+ *
+ * @param {string} email
+ * @returns {boolean}
+ */
 const isEmailValid = email =>
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
     email
@@ -25,9 +60,9 @@ const isEmailValid = email =>
  *
  * @param {string} name
  * @param {string} lastName
- * @param {number} phone
+ * @param {string} phone
  * @param {string} email
- * @return {boolean}
+ * @return {boolean|object}
  */
 function validateUser({ name, lastName, phone, email }) {
   if (
@@ -48,7 +83,7 @@ function validateUser({ name, lastName, phone, email }) {
 }
 
 /**
- * @param {object} name
+ * @param {object} user
  * @return {object}
  */
 async function saveUser(user) {
@@ -59,7 +94,7 @@ async function saveUser(user) {
       throw new Error("Invalid user Object");
     }
 
-    const fileData = JSON.parse(await readFileAsync(DATABASE_PATH));
+    const fileData = JSON.parse(await readFilePromisified(DATABASE_PATH));
     const userData = fileData.sort((a, b) => a.id > b.id);
 
     const newUser = user.hasOwnProperty("id")
@@ -75,11 +110,11 @@ async function saveUser(user) {
         };
     userData.push(newUser);
 
-    await writeFileAsync(DATABASE_PATH, JSON.stringify(userData));
+    await writeFilePromisified(DATABASE_PATH, JSON.stringify(userData));
 
     return newUser;
     /**
-     * @param {string} e
+     * @param {error} e
      * @return {error}
      */
   } catch (e) {
@@ -88,7 +123,7 @@ async function saveUser(user) {
 }
 
 router.get("/list", function(req, res, next) {
-  readFileAsync(DATABASE_PATH)
+  readFilePromisified(DATABASE_PATH)
     .then(data => {
       res.render("userTable", {
         title: "User List",
@@ -101,6 +136,9 @@ router.get("/list", function(req, res, next) {
     });
 });
 
+/**
+ * Save user route
+ */
 router.post("/", (req, res) => {
   saveUser(req.body)
     .then(user => {
@@ -123,7 +161,7 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   const userId = parseInt(req.params.id);
-  readFileAsync(DATABASE_PATH)
+  readFilePromisified(DATABASE_PATH)
     .then(data => {
       return JSON.parse(data);
     })
@@ -132,7 +170,7 @@ router.delete("/:id", (req, res) => {
       return json;
     })
     .then(file => {
-      writeFileAsync(DATABASE_PATH, JSON.stringify(file))
+      writeFilePromisified(DATABASE_PATH, JSON.stringify(file))
         .then(() => {
           res.status(200).send({ message: "ok" });
         })
@@ -154,7 +192,7 @@ router.get("/form", (req, res) => {
 });
 
 router.get("/form/:id", (req, res) => {
-  readFileAsync(DATABASE_PATH)
+  readFilePromisified(DATABASE_PATH)
     .then(data => {
       const userId = parseInt(req.params.id);
       const user = JSON.parse(data).find(u => u.id === parseInt(userId));
