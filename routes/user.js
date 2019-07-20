@@ -21,6 +21,14 @@ const isEmailValid = email =>
     email
   );
 
+/**
+ *
+ * @param {string} name
+ * @param {string} lastName
+ * @param {number} phone
+ * @param {string} email
+ * @return {boolean}
+ */
 function validateUser({ name, lastName, phone, email }) {
   if (
     isNameValid(name) &&
@@ -39,6 +47,10 @@ function validateUser({ name, lastName, phone, email }) {
   return false;
 }
 
+/**
+ * @param {object} name
+ * @return {object}
+ */
 async function saveUser(user) {
   try {
     const newUserData = validateUser(user);
@@ -66,6 +78,10 @@ async function saveUser(user) {
     await writeFileAsync(DATABASE_PATH, JSON.stringify(userData));
 
     return newUser;
+    /**
+     * @param {string} e
+     * @return {error}
+     */
   } catch (e) {
     return e.message;
   }
