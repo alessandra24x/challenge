@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   /**
    * @const {string} name
    * @const {string} lastName
-   * @const {number} phone
+   * @const {string} phone
    * @const {string} email
    * @const {string} submit
    */
