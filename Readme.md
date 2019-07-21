@@ -9,16 +9,15 @@ Clonarlo:
 git clone https://github.com/alessandra24x/challenge.git
 
 ```
-npm install
-npm start
+**npm install**
+
+**npm start**
 
 Una vez hecho esto el proyecto estará corriendo en la dirección:
-```
-```
+
 http://localhost:3000/
 
 ```
-
 Las rutas son las siguientes:
 ```
 GET /ping: Devuelve la palabra *pong*
@@ -41,11 +40,11 @@ PUT /user/{userId}: Actualiza al usuario con la información que proviene del ob
 
 DELETE /user/{userId} : Elimina a un usuario específico de la "base de datos".
 
-```
 
-## ****Tecnologías******
 
-```
+## Tecnologías
+
+
 Se utilizó:
 
 **NodeJs, Express**: Para administrar la creación del Servidor y declarar las rutas a las cuales responde la aplicación. Express generator para generar la estructura del proyecto.
