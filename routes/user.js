@@ -9,7 +9,7 @@ const readFilePromisified = promisify(readFile);
 const writeFilePromisified = promisify(writeFile);
 
 /**
- * This is the path to the file-database (customer.json).
+ * Ruta de la carpeta DATABASE que contiene el archivo de "base de datos" (customer.json).
  * @type {string}
  */
 const DATABASE_PATH = path.join(__dirname, "../database/customer.json");
